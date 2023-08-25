@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f111a;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    backdrop-filter: blur(90px);
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    transition: 1s;
+}
+
+.wrapProgressBar {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.progressBar {
+    width: 100%;
+    margin: 0 5px 0 5px;
+}
+
+.trackHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 1s;
+}
+
+.title {
+    font-size: 25px;
+}
+
+.artistAlbum {
+    font-size: 15px;
+}
+
+.wrapCover {
+    width: 300px;
+    margin-top: 35%;
+}
+
+.cover {
+    width: 100%;
+    /* box-shadow: 0px 0px 19px -2px rgba(0, 0, 0, 0.95); */
+    /* box-shadow: 0px 0px 80px 20px rgba(0, 0, 0, 0.95); */
+    box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
+}
+
+.wrapVideoShot {
+    position: relative;
+    /* background-color: rgb(20, 220, 20); */
+    height: 100vh;
+    width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: aliceblue;
+    z-index: 200;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.videoShot {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    opacity: 0;
+    transition: 1s;
+}
+
+.wrapControl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.controlUp{
+    display: flex;
+}
+
+.buttonPlayPause {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px 0 10px;
+}
+
+.buttonNextTrack{
+    width: 25px;
+    height: 25px;
+    align-self: center;
+}
+
+.buttonPreviousTrack {
+    width: 25px;
+    height: 25px;
+    transform: rotate(180deg);
+    align-self: center;
+}
+
+.controlDown {
+    width: 100%;
+    padding:0 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonText {
+    width: 25px;
+    height: 25px;
+}
+
+.wrapVolume {
+    width: 25px;
+    height: 25px;
+    display: flex;
+}
+
+.Shadow {
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 150;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-c43a6b14-4346-414b-b2ab-a00e1c7ea7f1" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183.36 120.05">
+  <defs>
+    <style>
+      .uuid-085ca671-0c46-47dc-9b33-340fd24bb098 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="uuid-4f473c57-4a46-4c9d-9465-49f8e72e08af" data-name="uuid-b5d1e208-1690-4ef4-bdb1-963ca743e626">
+    <g>
+      <rect class="uuid-085ca671-0c46-47dc-9b33-340fd24bb098" x=".5" y=".5" width="42" height="119" rx="17.8" ry="17.8"/>
+      <path class="uuid-085ca671-0c46-47dc-9b33-340fd24bb098" d="M173.95,74.82l-86.18,43.02c-10.7,5.34-23.27-2.45-23.26-14.4l.08-86.19c.01-11.96,12.6-19.72,23.29-14.36l86.11,43.17c11.84,5.94,11.83,22.85-.03,28.76h0Z"/>
+    </g>
+  </g>
+</svg>

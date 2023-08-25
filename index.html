@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vizualization</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/test.css">
+</head>
+
+<body>
+<div class="Shadow"></div>
+<div class="wrapVideoShot">
+    <div class="content">
+        <div class="trackHeader">
+            <div class="wrapCover">
+                <img class="cover" src="">
+            </div>
+            <div class="metaData">
+                <div class="title"></div>
+                <div class="artistAlbum"></div>
+            </div>
+        </div>
+
+        <div class="text"></div>
+
+        <div class="player">
+            <div class="wrapProgressBar">
+                <div class="currentTime"></div>
+                <input type="range" class="progressBar styled-slider slider-progress" min="0" max="100">
+                <div class="durationTime"></div>
+            </div>
+            <div class="wrapControl">
+                <div class="controlUp">
+                    <img src="/src/ico/next.svg" alt="" class="buttonPreviousTrack">
+                    <img src="/src/ico/play.svg" alt="" class="buttonPlayPause">
+                    <img src="/src/ico/next.svg" alt="" class="buttonNextTrack">
+                </div>
+                <div class="controlDown">
+                    <img src="/src/ico/text.svg" alt="" class="buttonText">
+                    <div class="wrapVolume">
+                    <img src="/src/ico/audio.svg" alt="" class="buttonVolume">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <video class="videoShot" src="non" loop></video>
+</div>
+</body>
+
+<script src="/js/main.js"></script>
+<script src="lib/js/moment.js"></script>
+<script defer src="/js/test.js"></script>
+<script src="/js/request.js"></script>
+</html>
