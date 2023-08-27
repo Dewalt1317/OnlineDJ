@@ -3,6 +3,7 @@ let audioObj = new Audio()
 let videoObj = document.querySelector(".videoShot")
 let playerElement = document.querySelector(".player")
 let buttonPlayPauseElement = document.querySelector(".buttonPlayPause")
+let buttonTextElement = document.querySelector(".buttonText")
 let buttonNextTrack = document.querySelector(".buttonNextTrack")
 let buttonVolumeElement = document.querySelector(".buttonVolume")
 let progressBar = document.querySelector(".progressBar")
@@ -12,21 +13,28 @@ let trackHeaderElement = document.querySelector(".trackHeader")
 let coverElement = document.querySelector(".cover")
 let titleElement = document.querySelector(".title")
 let artistAlbumElement = document.querySelector(".artistAlbum")
+let coverMiniElement = document.querySelector(".coverMini")
+let titleMiniElement = document.querySelector(".titleMini")
+let artistAlbumMiniElement =document.querySelector(".artistAlbumMini")
+let trackHeaderMiniElement = document.querySelector(".trackHeaderMini")
 let textElement = document.querySelector(".text")
 let durationTimeout = setTimeout(durationTimeF, 100)
 let interfaceOpacityTimeout = setTimeout(() => {}, 0)
 let currentTimeInterval = setInterval(currentTimeF, 100)
+let textTimeInterval = setInterval(() => {}, 0)
 let activeLine = 0
 let interfaceOpacity = 1
 let videoObjOpacity = 0
 let textSingleData = ""
-let videoObjStatus = "No"
+let videoObjStatus = "yes"
+let textStatus = "off"
 let playbackState = "pause"
 let mousedown = false
 
 bodyElement.addEventListener("mousemove",interfaceOpacityOn)
 buttonPlayPauseElement.addEventListener("click", buttonPlayPause)
 buttonVolumeElement.addEventListener("click", volume)
+buttonTextElement.addEventListener("click", text)
 progressBar.addEventListener("mousedown", () => {
     clearInterval(currentTimeInterval)
     mousedown = true
@@ -43,7 +51,6 @@ progressBar.addEventListener("mousemove", () => {
         if (timeFormat["seconds"] < 10) {
             timeFormat["seconds"] = "0" + timeFormat["seconds"]
         }
-        textSingleData.forEach(textSingle)
         currentTimeElement.textContent = timeFormat["minutes"] + ":" + timeFormat["seconds"]
     }
 })
@@ -61,8 +68,6 @@ progressBar.addEventListener("mouseup", () => {
     }
 })
 document.addEventListener('keydown', function (event) {
-    clearTimeout(interfaceHidenTimeout)
-    interfaceHidenTimeout = setTimeout(interfaceOpacityOff, 5000)
     interfaceOpacityOn()
     if (event.key === " ") {
         buttonPlayPause()
@@ -77,10 +82,15 @@ document.addEventListener('keydown', function (event) {
 function getTrack(data) {
     data =JSON.parse(data)
     titleElement.textContent = data["title"]
+    titleMiniElement.textContent = data["title"]
     artistAlbumElement.textContent = data["musical group"] + " - " + data["album"]
+    artistAlbumMiniElement.textContent = data["musical group"] + " - " + data["album"]
     coverElement.src = data["cover SRC"]
+    coverMiniElement.src = data["cover SRC"]
     bodyElement.style.backgroundImage = "url(" + data["cover SRC"] + ")"
     audioObj = new Audio(data["audio SRC"])
+    videoObj.src = data["video shot SRC"]
+    textSingleData = JSON.parse(data["text"])
 }
 
 function buttonPlayPause() {
@@ -93,7 +103,7 @@ function buttonPlayPause() {
 
 function play() {
     audioObj.play()
-    if (videoObjStatus === "No"){
+    if (videoObjStatus === "no"){
         console.log("No video")
     } else {
         videoObj.play()
@@ -115,17 +125,21 @@ function pause() {
 }
 
 function interfaceOpacityOn() {
+    if (textStatus === "off") {
     trackHeaderElement.style.opacity = 1
+    }
+    trackHeaderMiniElement.style.opacity = 0
     playerElement.style.opacity = 1
-    if (playbackState === "play" && videoObjStatus !== "No") {
         clearTimeout(interfaceOpacityTimeout)
         interfaceOpacityTimeout = setTimeout(interfaceOpacityOff, 5000)
-    }
 }
 
 function interfaceOpacityOff() {
+    if (playbackState === "play" && videoObjStatus !== "no") {
     trackHeaderElement.style.opacity = 0
+        trackHeaderMiniElement.style.opacity = 1
     playerElement.style.opacity = 0
+    }
 }
 
 function videoObjOpacityOff() {
@@ -157,7 +171,7 @@ function timeObj(seconds) {
 function currentTimeF() {
     let timeFormat = timeObj(audioObj.currentTime)
 
-    if (audioObj.currentTime === audioObj.duration && videoObj.paused != true) {
+    if (audioObj.currentTime === audioObj.duration && videoObj.paused !== true) {
         pause()
         textElement.textContent = ""
         activeLine = ""
@@ -169,7 +183,6 @@ function currentTimeF() {
 
     currentTimeElement.textContent = timeFormat["minutes"] + ":" + timeFormat["seconds"]
     progressBarF()
-    // textSingle.forEach(textSingleF)
 }
 
 function durationTimeF() {
@@ -188,15 +201,7 @@ function progressBarF() {
 
     progressBar.value = percentageOfProgress
 }
-function textSingle(item, index) {
-    let lineTime = Object.keys(item)[0]
-    let songLine = textSingleData[index][lineTime]
-    if (lineTime <= audioObj.currentTime + 0.1 && lineTime >= audioObj.currentTime - 0.1 && lineTime != activeLine) {
-        textElement.classList.toggle("text")
-        textElement.textContent = songLine
-        activeLine = lineTime
-    }
-}
+
 
 function volume () {
     if (audioObj.volume === 1) {
@@ -208,3 +213,28 @@ function volume () {
         buttonVolumeElement.src = "/src/ico/audio.svg"
     }
 }
+
+function text () {
+    if (textStatus === "on") {
+        textStatus = "off"
+        clearInterval(textTimeInterval)
+        textElement.textContent = ""
+        textElement.style.zIndex = -50
+        console.log("off")
+        buttonTextElement.style.transform = "rotate(0deg)"
+        trackHeaderElement.style.opacity = 1
+    } else if (textStatus === "off") {
+        textStatus = "on"
+        textSingleData.forEach(textOn)
+        textElement.style.zIndex = 1000
+        textTimeInterval = setInterval(textSinch, 100)
+        console.log("on")
+        buttonTextElement.style.transform = "rotate(180deg)"
+        trackHeaderElement.style.opacity = 0
+    }
+}
+
+function textSinch () {
+    textSingleData.forEach(textSingle)
+}
+
