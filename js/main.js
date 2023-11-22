@@ -4,7 +4,7 @@ let videoObj = document.querySelector(".videoShot")
 let playerElement = document.querySelector(".player")
 let buttonPlayPauseElement = document.querySelector(".buttonPlayPause")
 let buttonTextElement = document.querySelector(".buttonText")
-let buttonNextTrack = document.querySelector(".buttonNextTrack")
+let buttonNextTrackElement = document.querySelector(".buttonNextTrack")
 let buttonVolumeElement = document.querySelector(".buttonVolume")
 let progressBar = document.querySelector(".progressBar")
 let currentTimeElement = document.querySelector(".currentTime")
@@ -18,67 +18,25 @@ let titleMiniElement = document.querySelector(".titleMini")
 let artistAlbumMiniElement =document.querySelector(".artistAlbumMini")
 let trackHeaderMiniElement = document.querySelector(".trackHeaderMini")
 let textElement = document.querySelector(".text")
-let durationTimeout = setTimeout(durationTimeF, 100)
 let interfaceOpacityTimeout = setTimeout(() => {}, 0)
 let currentTimeInterval = setInterval(currentTimeF, 100)
 let textTimeInterval = setInterval(() => {}, 0)
 let activeLine = 0
-let interfaceOpacity = 1
-let videoObjOpacity = 0
 let textSingleData = ""
 let videoObjStatus = "yes"
 let textStatus = "off"
 let playbackState = "pause"
+let playerStatus = "open"
 let mousedown = false
 
 bodyElement.addEventListener("mousemove",interfaceOpacityOn)
 buttonPlayPauseElement.addEventListener("click", buttonPlayPause)
 buttonVolumeElement.addEventListener("click", volume)
 buttonTextElement.addEventListener("click", text)
-progressBar.addEventListener("mousedown", () => {
-    clearInterval(currentTimeInterval)
-    mousedown = true
-    if (playbackState === "play") {
-        pause()
-    }
-})
-progressBar.addEventListener("mousemove", () => {
-    if (mousedown === true) {
-        let rewind = progressBar.value
-        let onePercent = audioObj.duration / 100
-        let percentageOfRewind = rewind * onePercent
-        let timeFormat = timeObj(percentageOfRewind)
-        if (timeFormat["seconds"] < 10) {
-            timeFormat["seconds"] = "0" + timeFormat["seconds"]
-        }
-        currentTimeElement.textContent = timeFormat["minutes"] + ":" + timeFormat["seconds"]
-    }
-})
-progressBar.addEventListener("mouseup", () => {
-    mousedown = false
-    let rewind = progressBar.value
-    let onePercent = audioObj.duration / 100
-    let percentageOfRewind = rewind * onePercent
+progressBar.addEventListener("mousedown", progressBarMouse)
+progressBar.addEventListener("mousemove", progressBarMouse)
+progressBar.addEventListener("mouseup", progressBarMouse)
 
-    audioObj.currentTime = percentageOfRewind
-    currentTimeInterval = setInterval(currentTimeF, 100)
-
-    if (playbackState === "pause") {
-        play()
-    }
-})
-document.addEventListener('keydown', function (event) {
-    interfaceOpacityOn()
-    if (event.key === " ") {
-        buttonPlayPause()
-    } else if (event.key === "ArrowRight") {
-        audioObj.currentTime = audioObj.currentTime + 5
-    } else if (event.key === "ArrowLeft") {
-        audioObj.currentTime = audioObj.currentTime - 5
-    } else if (event.key === "m" || event.key === "ь" || event.key === "M" || event.key === "Ь"){
-        volume()
-    }
-})
 function getTrack(data) {
     data =JSON.parse(data)
     titleElement.textContent = data["title"]
@@ -91,6 +49,11 @@ function getTrack(data) {
     audioObj = new Audio(data["audio SRC"])
     videoObj.src = data["video shot SRC"]
     textSingleData = JSON.parse(data["text"])
+    if (data["video shot SRC"] === "") {
+        videoObjStatus = "no"
+    } else {
+        videoObjStatus = "yes"
+    }
 }
 
 function buttonPlayPause() {
@@ -99,6 +62,14 @@ function buttonPlayPause() {
     } else {
         pause()
     }
+}
+
+function pause() {
+    audioObj.pause()
+    playbackState = "pause"
+    buttonPlayPauseElement.src = "/src/ico/play.svg"
+    videoObjOpacityOff()
+    interfaceOpacityOn()
 }
 
 function play() {
@@ -116,38 +87,38 @@ function play() {
 
 }
 
-function pause() {
-    audioObj.pause()
-    playbackState = "pause"
-    buttonPlayPauseElement.src = "/src/ico/play.svg"
-    videoObjOpacityOff()
-    interfaceOpacityOn()
-}
+function progressBarMouse (event) {
+    var buttonPressed = progressBar.button
+    console.log(buttonPressed)
+    if (event === "down") {
+        clearInterval(currentTimeInterval)
+        mousedown = true
+        if (playbackState === "play") {
+            pause()
+        }
+    } else if (event === "move"){}
+    if (mousedown === true) {
+        let rewind = progressBar.value
+        let onePercent = audioObj.duration / 100
+        let percentageOfRewind = rewind * onePercent
+        let timeFormat = timeObj(percentageOfRewind)
+        if (timeFormat["seconds"] < 10) {
+            timeFormat["seconds"] = "0" + timeFormat["seconds"]
+        }
+        currentTimeElement.textContent = timeFormat["minutes"] + ":" + timeFormat["seconds"]
+    }else if (event === "up") {
+        mousedown = false
+        let rewind = progressBar.value
+        let onePercent = audioObj.duration / 100
+        let percentageOfRewind = rewind * onePercent
 
-function interfaceOpacityOn() {
-    if (textStatus === "off") {
-    trackHeaderElement.style.opacity = 1
+        audioObj.currentTime = percentageOfRewind
+        currentTimeInterval = setInterval(currentTimeF, 100)
+
+        if (playbackState === "pause") {
+            play()
+        }
     }
-    trackHeaderMiniElement.style.opacity = 0
-    playerElement.style.opacity = 1
-        clearTimeout(interfaceOpacityTimeout)
-        interfaceOpacityTimeout = setTimeout(interfaceOpacityOff, 5000)
-}
-
-function interfaceOpacityOff() {
-    if (playbackState === "play" && videoObjStatus !== "no") {
-    trackHeaderElement.style.opacity = 0
-        trackHeaderMiniElement.style.opacity = 1
-    playerElement.style.opacity = 0
-    }
-}
-
-function videoObjOpacityOff() {
-    videoObj.style.opacity = 0
-}
-
-function videoObjOpacityOn() {
-    videoObj.style.opacity = 1
 }
 
 function timeObj(seconds) {
@@ -173,8 +144,9 @@ function currentTimeF() {
 
     if (audioObj.currentTime === audioObj.duration && videoObj.paused !== true) {
         pause()
-        textElement.textContent = ""
-        activeLine = ""
+        if (textStatus === "on") {
+            text()
+        }
     }
 
     if (timeFormat["seconds"] < 10) {
@@ -183,6 +155,7 @@ function currentTimeF() {
 
     currentTimeElement.textContent = timeFormat["minutes"] + ":" + timeFormat["seconds"]
     progressBarF()
+    durationTimeF()
 }
 
 function durationTimeF() {
@@ -201,6 +174,37 @@ function progressBarF() {
 
     progressBar.value = percentageOfProgress
 }
+function interfaceOpacityOn() {
+    if (playerStatus === "open"){
+        if (textStatus === "off") {
+            trackHeaderElement.style.opacity = 1
+        }
+        trackHeaderMiniElement.style.opacity = 0
+        playerElement.style.opacity = 1
+        if (playbackState === "play" && videoObjStatus !== "no") {
+            clearTimeout(interfaceOpacityTimeout)
+            interfaceOpacityTimeout = setTimeout(interfaceOpacityOff, 5000)
+        }
+    }
+}
+
+function interfaceOpacityOff() {
+    trackHeaderElement.style.opacity = 0
+    trackHeaderMiniElement.style.opacity = 1
+    playerElement.style.opacity = 0
+}
+
+function videoObjOpacityOff() {
+    videoObj.style.opacity = 0
+}
+
+function videoObjOpacityOn() {
+    videoObj.style.opacity = 1
+}
+
+
+
+
 
 
 function volume () {
@@ -218,23 +222,25 @@ function text () {
     if (textStatus === "on") {
         textStatus = "off"
         clearInterval(textTimeInterval)
-        textElement.textContent = ""
         textElement.style.zIndex = -50
-        console.log("off")
         buttonTextElement.style.transform = "rotate(0deg)"
         trackHeaderElement.style.opacity = 1
+        trackHeaderElement.style.zIndex = 250
+        textElement.style.opacity = 0
     } else if (textStatus === "off") {
         textStatus = "on"
-        textSingleData.forEach(textOn)
-        textElement.style.zIndex = 1000
+        if (textElement.textContent === "" ){
+            textSingleData.forEach(textOn)
+        }
         textTimeInterval = setInterval(textSinch, 100)
-        console.log("on")
         buttonTextElement.style.transform = "rotate(180deg)"
         trackHeaderElement.style.opacity = 0
+        textElement.style.opacity = 1
+        trackHeaderElement.style.zIndex = -50
+        textElement.style.zIndex = 250
     }
 }
 
 function textSinch () {
     textSingleData.forEach(textSingle)
 }
-

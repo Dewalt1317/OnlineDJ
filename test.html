@@ -1,63 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/test.css">
-</head>
-
-<body>
-<div class="block">
-    <div class="blk"></div>
-    <div class="lkb"></div>
-</div>
-<script>
-    let block = document.querySelector(".block")
-    block.addEventListener("click", kek)
-
-    function kek() {
-        block.classList.toggle("blockClick")
-    }
-</script>
 <style>
-    .blk {
-        width: 50px;
-        height: 50px;
-        background-color: burlywood;
-        transition: 1s;
-
-    }
-
-    .lkb {
-        width: 50px;
-        height: 50px;
-        background-color: rgb(10, 165, 23);
-        transition: 1s;
-
-    }
-
-    .block {
-        width: 150px;
-        height: 150px;
-        /* background-color: blue; */
-        transition: 1s;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-    }
-
-    .blockClick {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        width: 100px;
-        height: 200px;
-        background-color: fuchsia;
-        margin: 150px;
+    .overflow {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 200px;
+        height: 80px;
+        border: 1px solid black;
     }
 </style>
-</body>
-<script defer src="/js/test.js"></script>
 
-</html>
+<div class="overflow">
+    ПоШиринеПолосаПрокруткиAutoПоШиринеПолосаПрокруткиAuto
+    Этот текст вылезает снизу Этот текст вылезает снизу
+    Этот текст вылезает снизу Этот текст вылезает снизу
+</div>

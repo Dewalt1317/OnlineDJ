@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     user-select: none;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
 }
 
 body {
@@ -81,21 +81,16 @@ body {
 
 .cover {
     width: 100%;
-    /* box-shadow: 0px 0px 19px -2px rgba(0, 0, 0, 0.95); */
-    /* box-shadow: 0px 0px 80px 20px rgba(0, 0, 0, 0.95); */
     box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
 }
 
 .coverMini {
     width: 100%;
-    /* box-shadow: 0px 0px 19px -2px rgba(0, 0, 0, 0.95); */
-    /* box-shadow: 0px 0px 80px 20px rgba(0, 0, 0, 0.95); */
     box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
 }
 
 .wrapVideoShot {
     position: relative;
-    /* background-color: rgb(20, 220, 20); */
     height: 100vh;
     width: 500px;
     margin: 0 auto;
@@ -112,7 +107,6 @@ body {
     justify-content: space-around;
     color: aliceblue;
     z-index: 250;
-    /* background-color: rgba(0, 0, 0, 0.3); */
     position: absolute;
     width: 100%;
     height: 100%;
@@ -125,6 +119,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -50;
+    align-items: center;
 }
 
 .videoShot {
@@ -194,8 +189,8 @@ body {
 
 .wrapText {
     display: flex;
-    width: 100%;
-    height: 80%;
+    width: 110%;
+    height: 75%;
     transition: 1s;
 }
 
@@ -210,8 +205,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
+    transition: 1s;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    /*padding-top: 50%;*/
 }
 .text::-webkit-scrollbar {
     width: 0;
@@ -219,9 +220,43 @@ body {
 }
 .text div {
     margin-bottom: 30px;
-    color: darkgray;
+    color: #7e7e7e;
+    transition: 0.5s;
+}
+.text div:first-child {
+    margin-top: 50%;
 }
 .activeText {
-    margin-bottom: 45px;
-    color: #000000;
+    font-size: 25px !important;
+    color: #fafafa !important;
+}
+.playerHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.wrapPlayerHeader {
+    display: flex;
+    align-items: center;
+}
+
+.wrapPlayListName {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.wrapButtonMinimizePlayer {
+    width: 25px;
+    height: 25px;
+}
+
+.buttonMinimizePlayer {
+    width: 25px;
+    height: 25px;
+    transform: rotate(90deg);
 }
